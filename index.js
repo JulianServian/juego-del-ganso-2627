@@ -248,3 +248,61 @@ botoMoure.onclick = () => {
 };
 renderitzarTauler();
 
+//Exercici 11
+const jugadorA = {
+  nom: "Jugador A",
+  posicio: 0,
+  activat: true,
+};
+
+const jugadorB = {
+  nom: "Jugador B",
+  posicio: 0,
+  activat: false,
+};
+
+const botoDauJoc = document.querySelector('#botoDauJoc');
+const infoJugadors = document.querySelector('#infoJugadors');
+const infoTorn = document.querySelector('#infoTorn');
+
+function mostrarPropietatsJugadors() {
+  let html = "<h3>Estat dels jugadors:</h3>";
+
+  html += "<p><strong>" + jugadorA.nom + ":</strong><br>";
+  for (let propietat in jugadorA) {
+    html += `- ${propietat}: ${jugadorA[propietat]}<br>`;
+  }
+  html += "</p>";
+
+  html += "<p><strong>" + jugadorB.nom + ":</strong><br>";
+  for (let propietat in jugadorB) {
+    html += `- ${propietat}: ${jugadorB[propietat]}<br>`;
+  }
+  html += "</p>";
+
+  infoJugadors.innerHTML = html;
+}
+
+botoDauJoc.addEventListener('click', () => {
+  const dau = Math.floor(Math.random() * 6) + 1;
+  
+  const jugadorActual = jugadorA.activat ? jugadorA : jugadorB;
+
+  jugadorActual.posicio += dau;
+  if (jugadorActual.posicio > 20) {
+    jugadorActual.posicio = 20;
+  }
+
+  jugadorA.activat = !jugadorA.activat;
+  jugadorB.activat = !jugadorB.activat;
+
+  const seguentJugador = jugadorA.activat ? jugadorA.nom : jugadorB.nom;
+  infoTorn.textContent = `${jugadorActual.nom} ha tret un ${dau}. Propera posició: ${jugadorActual.posicio}. Proper torn: ${seguentJugador}`;
+
+  mostrarPropietatsJugadors();
+  
+  posicioFitxa = jugadorActual.posicio;
+  renderitzarTauler();
+});
+
+mostrarPropietatsJugadors();
