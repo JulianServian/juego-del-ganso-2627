@@ -19,7 +19,7 @@ function executarSuma() {
   let puntsExtra = 3;
   let total = sumar(puntsBase, puntsExtra);
   
-  document.querySelector("#resultat").innerHTML = "Punts totals: <strong>" + total + "</strong>";
+  document.querySelector("#resultatOperacions").innerHTML = "Punts totals: <strong>" + total + "</strong>";
 }
 
 function executarMultiplicacio() {
@@ -27,12 +27,12 @@ function executarMultiplicacio() {
   let multiplicador = 2;
   let puntsFinals = multiplicar(punts, multiplicador);
   
-  document.querySelector("#resultat").innerHTML = "Punts amb bonificació: "  + puntsFinals ;
+  document.querySelector("#resultatOperacions").innerHTML = "Punts amb bonificació: " + puntsFinals;
 }
 
 function processarNumero() {
   const inputValor = document.querySelector("#numInput").value;
-  const divResultat = document.querySelector("#resultat");
+  const divResultat = document.querySelector("#resultatTaula"); 
   const pValidacio = document.querySelector("#missatgeValidacio");
 
   if (inputValor === "") {
@@ -92,4 +92,25 @@ text.classList.add("text-destacat");
 boto.addEventListener("click", () => {
   text.style.backgroundColor = "yellow";
   text.style.color = "black";
+});
+
+const infoTurno = document.querySelector("#infoTurno");
+const resultat = document.querySelector("#resultatDau"); // Canviat a #resultatDau
+const botonDado = document.querySelector("#botonDado");
+
+let tornActual = "A"; 
+
+botonDado.addEventListener("click", () => {
+  const dau = Math.floor(Math.random() * 6) + 1;
+
+  resultat.textContent = `Jugador ${tornActual} ha tret un ${dau}.`;
+
+  // Canviem el torn
+  if (tornActual === "A") {
+    tornActual = "B";
+  } else {
+    tornActual = "A";
+  }
+
+  infoTurno.textContent = `Torn del Jugador ${tornActual}`;
 });
