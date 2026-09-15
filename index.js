@@ -215,3 +215,36 @@ function comprovarResposta(i) {
 
 carregarPregunta();
 
+//Exercici 10
+
+const casellesTauler = [];
+for (let i = 0; i <= 20; i++) {
+  casellesTauler[i] = i;
+}
+
+let posicioFitxa = 0;
+
+const contenidor = document.querySelector('#contenidorTauler');
+const botoMoure = document.querySelector('#botoMoure');
+
+function renderitzarTauler() {
+  let html = '';
+  
+  for (let i = 0; i < casellesTauler.length; i++) {
+    const esActiva = (i === posicioFitxa) ? 'activa' : '';
+    html += `<div class="casella ${esActiva}">${casellesTauler[i]}</div>`;
+  }
+
+  contenidor.innerHTML = html;
+}
+
+botoMoure.onclick = () => {
+  if (posicioFitxa < 20) {
+    posicioFitxa++;
+  } else {
+    posicioFitxa = 0; 
+  }
+  renderitzarTauler();
+};
+renderitzarTauler();
+
