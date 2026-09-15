@@ -95,7 +95,7 @@ boto.addEventListener("click", () => {
 });
 
 const infoTurno = document.querySelector("#infoTurno");
-const resultat = document.querySelector("#resultatDau"); // Canviat a #resultatDau
+const resultat = document.querySelector("#resultatDau");
 const botonDado = document.querySelector("#botonDado");
 
 let tornActual = "A"; 
@@ -105,7 +105,6 @@ botonDado.addEventListener("click", () => {
 
   resultat.textContent = `Jugador ${tornActual} ha tret un ${dau}.`;
 
-  // Canviem el torn
   if (tornActual === "A") {
     tornActual = "B";
   } else {
@@ -113,4 +112,15 @@ botonDado.addEventListener("click", () => {
   }
 
   infoTurno.textContent = `Torn del Jugador ${tornActual}`;
+});
+
+const formulari = document.querySelector('#formulariJugador');
+const inputNom = document.querySelector('#nom');
+const missatge = document.querySelector('#missatge');
+
+formulari.addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const nomJugador = inputNom.value;
+  missatge.textContent = `Jugador 1: ${nomJugador}`;
 });

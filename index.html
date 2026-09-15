@@ -7,7 +7,7 @@
 <body>
   <div id="salida"></div>
 
-  <h3>Operacions del joc</h3>
+  <h2>Operacions del joc</h2>
   <button onclick="executarSuma()">Sumar Punts (5 + 3)</button>
   <button onclick="executarMultiplicacio()">Multiplicar Bonificació (4 x 2)</button>
   <div id="resultatOperacions"></div> <!-- Canviat per a la suma/multiplicació -->
@@ -27,6 +27,15 @@
   <p id="resultatDau">Fes clic per llançar el dau.</p> 
   <button id="botonDado">Llançar dau</button>
 
+  <h2>Formulari</h2>
+  <form id="formulariJugador">
+    <label for="nom">Nom del jugador:</label>
+    <input type="text" id="nom" required>
+    <button type="submit">Enviar</button>
+  </form>
+
+  <p id="missatge"></p>
+  
   <script src="index.js"></script>
 </body>
 </html>
