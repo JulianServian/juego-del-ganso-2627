@@ -81,3 +81,15 @@ switch (estat) {
   default:
     console.log("Estat no reconegut.");
 }
+
+const text = document.querySelector("#miTexto");
+const boto = document.querySelector("#miBoton");
+
+text.textContent = "Texto modificado";
+
+text.classList.add("text-destacat");
+
+boto.addEventListener("click", () => {
+  text.style.backgroundColor = "yellow";
+  text.style.color = "black";
+});
