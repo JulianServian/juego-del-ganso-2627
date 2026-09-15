@@ -124,3 +124,27 @@ formulari.addEventListener('submit', function(event) {
   const nomJugador = inputNom.value;
   missatge.textContent = `Jugador 1: ${nomJugador}`;
 });
+
+
+//S3 — Arrays, objectes i moviment del joc
+
+const caselles = ["Start", "Poble", "Pont", "Casa", "Bosc", "Mola", "Final"];
+
+const botoTirar = document.querySelector('#botoTirar');
+const resultatTirada = document.querySelector('#resultatTirada');
+const resultatCasella = document.querySelector('#resultatCasella');
+
+botoTirar.addEventListener('click', function() {
+
+  //Numero aleatorio de 0 al 6 valido para el array
+  const tirada = Math.floor(Math.random() * caselles.length);
+
+  // Accedim a l'element de l'array usant el número de la tirada com a índex
+  const nomCasella = caselles[tirada];
+
+
+  resultatTirada.textContent = `Número del dau : ${tirada}`;
+  resultatCasella.textContent = `Has caigut a: ${nomCasella}`;
+
+  console.log(`Tirada: ${tirada} - Casella: ${nomCasella}`);
+});
