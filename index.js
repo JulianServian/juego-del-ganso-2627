@@ -139,7 +139,7 @@ botoTirar.addEventListener('click', function() {
   //Numero aleatorio de 0 al 6 valido para el array
   const tirada = Math.floor(Math.random() * caselles.length);
 
-  // Accedim a l'element de l'array usant el número de la tirada com a índex
+  // Accedo al array usando el numero de tirada como index
   const nomCasella = caselles[tirada];
 
 
@@ -148,3 +148,70 @@ botoTirar.addEventListener('click', function() {
 
   console.log(`Tirada: ${tirada} - Casella: ${nomCasella}`);
 });
+
+
+
+// Exercici 9: array de preguntes i objectes
+
+const preguntes = [
+  {
+    pregunta: "Quina és la capital de Catalunya?",
+    respostes: ["Girona", "Lleida", "Barcelona", "Tarragona"],
+    correcta: 2 
+  },
+  {
+    pregunta: "Quants dies té un any de traspàs?",
+    respostes: ["365", "366", "364", "360"],
+    correcta: 1
+  },
+  {
+    pregunta: "Quin és el planeta més gran del sistema solar?",
+    respostes: ["Mart", "Lleó", "Júpiter", "Saturn"],
+    correcta: 2 
+  },
+  {
+    pregunta: "Quin llenguatge d'programació s'utilitza per afegir interactivitat a les pàgines web?",
+    respostes: ["HTML", "CSS", "Python", "JavaScript"],
+    correcta: 3 
+  }
+];
+
+let indexPreguntaActual = 0;
+
+
+const enunciat = document.querySelector('#enunciatPregunta');
+const contenidorOpcions = document.querySelector('#opcionsContenidor');
+const resultatPregunta = document.querySelector('#resultatPregunta');
+
+function carregarPregunta() {
+  const preguntaActual = preguntes[indexPreguntaActual];
+
+  enunciat.textContent = preguntaActual.pregunta;
+
+  // Limpio botones
+  contenidorOpcions.innerHTML = '';
+  resultatPregunta.textContent = '';
+
+  let html = '';
+
+  for (let i = 0; i < preguntaActual.respostes.length; i++) {
+    html += `<button onclick="comprovarResposta(${i})">${preguntaActual.respostes[i]}</button>`;
+}
+
+contenidorOpcions.innerHTML = html;
+}
+
+function comprovarResposta(i) {
+  const preguntaActual = preguntes[indexPreguntaActual];
+
+  if (i === preguntaActual.correcta) {
+    resultatPregunta.textContent = "Correcte!";
+    resultatPregunta.style.color = "green";
+  } else {
+    resultatPregunta.textContent = "Incorrecte";
+    resultatPregunta.style.color = "red";
+  }
+}
+
+carregarPregunta();
+
