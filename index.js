@@ -63,3 +63,21 @@ function processarNumero() {
   }
 }
 
+let estat = "inici"; 
+
+switch (estat) {
+  case "inici":
+    console.log("El joc està a punt de començar!");
+    break;
+  case "turnoA":
+    console.log("És el torn del jugador A.");
+    break;
+  case "turnoB":
+    console.log("És el torn del jugador B.");
+    break;
+  case "final":
+    console.log("El joc ha acabat!");
+    break;
+  default:
+    console.log("Estat no reconegut.");
+}
