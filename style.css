@@ -20,3 +20,20 @@
   background-color: #4caf50;
   color: white;
 }
+
+.text-destacat {
+  font-weight: bold;
+}
+
+.text-destacat-actiu {
+  background-color: yellow;
+  color: black;
+}
+
+.correcte {
+  color: green;
+}
+
+.incorrecte {
+  color: red;
+}

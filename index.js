@@ -115,8 +115,7 @@ text.classList.add("text-destacat");
 
 // Cuando se pulsa el botón, cambiamos el color de fondo y el texto.
 boto.addEventListener("click", () => {
-  text.style.backgroundColor = "yellow";
-  text.style.color = "black";
+  text.classList.add("text-destacat-actiu");
 });
 
 // Seleccionamos los elementos relacionados con el turno y el dado.
@@ -236,14 +235,14 @@ function carregarPregunta() {
 
   // Generamos un botón por cada opción de respuesta.
   for (let i = 0; i < preguntaActual.respostes.length; i++) {
-    html += `<button data-resposta="${i}">${preguntaActual.respostes[i]}</button>`;
+    html += `<button>${preguntaActual.respostes[i]}</button>`;
   }
 
   // Insertamos los botones en el contenedor.
   contenidorOpcions.innerHTML = html;
-  contenidorOpcions.querySelectorAll("[data-resposta]").forEach((botoResposta) => {
+  contenidorOpcions.querySelectorAll("button").forEach((botoResposta, index) => {
     botoResposta.addEventListener("click", () => {
-      comprovarResposta(Number(botoResposta.dataset.resposta));
+      comprovarResposta(index);
     });
   });
 }
@@ -254,10 +253,12 @@ function comprovarResposta(i) {
 
   if (i === preguntaActual.correcta) {
     resultatPregunta.innerHTML = "Correcte!";
-    resultatPregunta.style.color = "green";
+    resultatPregunta.classList.remove("incorrecte");
+    resultatPregunta.classList.add("correcte");
   } else {
     resultatPregunta.innerHTML = "Incorrecte";
-    resultatPregunta.style.color = "red";
+    resultatPregunta.classList.remove("correcte");
+    resultatPregunta.classList.add("incorrecte");
   }
 }
 
