@@ -9,14 +9,14 @@
   <div id="salida"></div>
 
   <h2>Operacions del joc</h2>
-  <button onclick="executarSuma()">Sumar Punts (5 + 3)</button>
-  <button onclick="executarMultiplicacio()">Multiplicar Bonificació (4 x 2)</button>
+  <button id="botoSuma">Sumar Punts (5 + 3)</button>
+  <button id="botoMultiplicacio">Multiplicar Bonificació (4 x 2)</button>
   <div id="resultatOperacions"></div> <!-- Canviat per a la suma/multiplicació -->
   
   <h2>Taula de multiplicar</h2>
   <label for="numInput">Introdueix un número:</label>
   <input type="number" id="numInput" placeholder="Ex: 5" required>
-  <button onclick="processarNumero()">Calcular</button>
+  <button id="botoCalcular">Calcular</button>
 
   <p id="missatgeValidacio"></p>
   <div id="resultatTaula"></div>
@@ -54,6 +54,8 @@
   <button id="botoDauJoc">Tirar dau i moure</button>
   <p id="infoTorn"></p>
   <div id="infoJugadors"></div>
+
+<div id="carlos"></div>
 
   <script src="index.js"></script>
 </body>

@@ -1,6 +1,6 @@
-// Declaramos el nombre del jugador principal y el máximo de tiradas permitidas.
+ // Declaramos el nombre del jugador principal y el máximo de tiradas permitidas.
 let nomJugador = "Anna";
-const MAX_TIRADES = 5;
+const MAX_TIRADES = 5; 
 
 // Mostramos los valores en la consola para comprobar que se han cargado correctamente.
 console.log("Jugador: " + nomJugador);
@@ -37,6 +37,10 @@ function executarMultiplicacio() {
   
   document.querySelector("#resultatOperacions").innerHTML = "Punts amb bonificació: " + puntsFinals;
 }
+
+document.querySelector("#botoSuma").addEventListener("click", executarSuma);
+document.querySelector("#botoMultiplicacio").addEventListener("click", executarMultiplicacio);
+document.querySelector("#botoCalcular").addEventListener("click", processarNumero);
 
 // Función para leer un número del formulario y validarlo.
 function processarNumero() {
@@ -104,7 +108,7 @@ const text = document.querySelector("#miTexto");
 const boto = document.querySelector("#miBoton");
 
 // Cambiamos el texto visible del elemento.
-text.textContent = "Texto modificado";
+text.innerHTML = "Texto modificado";
 
 // Añadimos una clase CSS para destacar el texto.
 text.classList.add("text-destacat");
@@ -128,7 +132,7 @@ botonDado.addEventListener("click", () => {
   const dau = Math.floor(Math.random() * 6) + 1; // Número aleatorio de 1 a 6.
 
   // Mostramos qué jugador ha sacado qué valor.
-  resultat.textContent = `Jugador ${tornActual} ha tret un ${dau}.`;
+  resultat.innerHTML = `Jugador ${tornActual} ha tret un ${dau}.`;
 
   // Cambiamos el turno entre A y B.
   if (tornActual === "A") {
@@ -138,7 +142,7 @@ botonDado.addEventListener("click", () => {
   }
 
   // Actualizamos el texto del turno actual.
-  infoTurno.textContent = `Torn del Jugador ${tornActual}`;
+  infoTurno.innerHTML = `Torn del Jugador ${tornActual}`;
 });
 
 // Seleccionamos el formulario y los campos del nombre del jugador.
@@ -151,7 +155,7 @@ formulari.addEventListener('submit', function(event) {
   event.preventDefault();
 
   const nomJugador = inputNom.value; // Guardamos el valor escrito por el usuario.
-  missatge.textContent = `Jugador 1: ${nomJugador}`; // Lo mostramos en pantalla.
+  missatge.innerHTML = `Jugador 1: ${nomJugador}`; // Lo mostramos en pantalla.
 });
 
 
@@ -175,8 +179,8 @@ botoTirar.addEventListener('click', function() {
   const nomCasella = caselles[tirada];
 
   // Mostramos el número de tirada y la casilla elegida.
-  resultatTirada.textContent = `Número del dau : ${tirada}`;
-  resultatCasella.textContent = `Has caigut a: ${nomCasella}`;
+  resultatTirada.innerHTML = `Número del dau : ${tirada}`;
+  resultatCasella.innerHTML = `Has caigut a: ${nomCasella}`;
 
   // Guardamos el resultado en consola para depurar.
   console.log(`Tirada: ${tirada} - Casella: ${nomCasella}`);
@@ -222,21 +226,26 @@ function carregarPregunta() {
   const preguntaActual = preguntes[indexPreguntaActual]; // Obtenemos la pregunta actual.
 
   // Mostramos el texto de la pregunta.
-  enunciat.textContent = preguntaActual.pregunta;
+  enunciat.innerHTML = preguntaActual.pregunta;
 
   // Limpiamos los botones anteriores y el resultado previo.
   contenidorOpcions.innerHTML = '';
-  resultatPregunta.textContent = '';
+  resultatPregunta.innerHTML = '';
 
   let html = '';
 
   // Generamos un botón por cada opción de respuesta.
   for (let i = 0; i < preguntaActual.respostes.length; i++) {
-    html += `<button onclick="comprovarResposta(${i})">${preguntaActual.respostes[i]}</button>`;
+    html += `<button data-resposta="${i}">${preguntaActual.respostes[i]}</button>`;
   }
 
   // Insertamos los botones en el contenedor.
   contenidorOpcions.innerHTML = html;
+  contenidorOpcions.querySelectorAll("[data-resposta]").forEach((botoResposta) => {
+    botoResposta.addEventListener("click", () => {
+      comprovarResposta(Number(botoResposta.dataset.resposta));
+    });
+  });
 }
 
 // Comprobamos si la respuesta elegida es la correcta.
@@ -244,10 +253,10 @@ function comprovarResposta(i) {
   const preguntaActual = preguntes[indexPreguntaActual];
 
   if (i === preguntaActual.correcta) {
-    resultatPregunta.textContent = "Correcte!";
+    resultatPregunta.innerHTML = "Correcte!";
     resultatPregunta.style.color = "green";
   } else {
-    resultatPregunta.textContent = "Incorrecte";
+    resultatPregunta.innerHTML = "Incorrecte";
     resultatPregunta.style.color = "red";
   }
 }
@@ -285,14 +294,14 @@ function renderitzarTauler() {
 }
 
 // Cuando pulsamos el botón de mover, avanzamos la ficha o la volvemos a empezar.
-botoMoure.onclick = () => {
+botoMoure.addEventListener("click", () => {
   if (posicioFitxa < 20) {
     posicioFitxa++;
   } else {
     posicioFitxa = 0; 
   }
   renderitzarTauler();
-};
+});
 
 // Dibujamos el tablero inicialmente.
 renderitzarTauler();
@@ -361,7 +370,7 @@ botoDauJoc.addEventListener('click', () => {
   const seguentJugador = jugadorA.activat ? jugadorA.nom : jugadorB.nom;
 
   // Actualizamos el texto con la tirada y el próximo turno.
-  infoTorn.textContent = `${jugadorActual.nom} ha tret un ${dau}. Propera posició: ${jugadorActual.posicio}. Proper torn: ${seguentJugador}`;
+  infoTorn.innerHTML = `${jugadorActual.nom} ha tret un ${dau}. Propera posició: ${jugadorActual.posicio}. Proper torn: ${seguentJugador}`;
 
   // Mostramos los datos actualizados de los jugadores.
   mostrarPropietatsJugadors();
@@ -373,3 +382,9 @@ botoDauJoc.addEventListener('click', () => {
 
 // Mostramos el estado inicial de los jugadores al cargar la página.
 mostrarPropietatsJugadors();
+
+// Quitar y poner una clase a un boton con un toggle
+const botoToggle = document.querySelector('#botoToggle');
+botoToggle.addEventListener('click', () => {
+  botoToggle.classList.toggle('activat'); 
+});
