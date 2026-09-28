@@ -122,13 +122,14 @@ boto.addEventListener("click", () => {
 const infoTurno = document.querySelector("#infoTurno");
 const resultat = document.querySelector("#resultatDau");
 const botonDado = document.querySelector("#botonDado");
+const tirarDau = () => Math.floor(Math.random() * 6) + 1;
 
 // Variable que guarda el turno actual del juego.
 let tornActual = "A"; 
 
 // Al hacer click en el botón del dado, lanzamos un valor aleatorio.
 botonDado.addEventListener("click", () => {
-  const dau = Math.floor(Math.random() * 6) + 1; // Número aleatorio de 1 a 6.
+  const dau = tirarDau();
 
   // Mostramos qué jugador ha sacado qué valor.
   resultat.innerHTML = `Jugador ${tornActual} ha tret un ${dau}.`;
@@ -247,7 +248,8 @@ function carregarPregunta() {
   });
 }
 
-// Comprobamos si la respuesta elegida es la correcta.
+// Comprobamos si la res
+// puesta elegida es la correcta.
 function comprovarResposta(i) {
   const preguntaActual = preguntes[indexPreguntaActual];
 
