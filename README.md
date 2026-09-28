@@ -101,7 +101,7 @@ Después se convierte el valor a número y se valida si está dentro del rango p
 
 ```js
 const num = Number(inputValor);
-const esValid = (num >= 0 && num <= 10) ? "Número en rango" : "Número fueraa de rango";
+const esValid = (num >= 0 && num <= 10) ? "Número en rango" : "Número fuera de rango";
 ```
 
 Si el valor es menor que 0 o mayor que 10, se muestran mensajes específicos. Si está dentro del rango, se genera una tabla de multiplicar con un bucle:

@@ -129,10 +129,12 @@ let tornActual = "A";
 
 // Al hacer click en el botón del dado, lanzamos un valor aleatorio.
 botonDado.addEventListener("click", () => {
-  const dau = tirarDau();
+  const nomJugador = tornActual;
+  const valorDau = tirarDau();
 
   // Mostramos qué jugador ha sacado qué valor.
-  resultat.innerHTML = `Jugador ${tornActual} ha tret un ${dau}.`;
+  const missatge = `Jugador ${nomJugador} ha tret ${valorDau}`;
+  resultat.textContent = missatge.toUpperCase();
 
   // Cambiamos el turno entre A y B.
   if (tornActual === "A") {
