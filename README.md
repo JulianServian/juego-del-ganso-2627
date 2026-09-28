@@ -427,6 +427,22 @@ Este bloque es la base para convertir el proyecto en un juego de mesa más reali
 
 ---
 
+## 12. Alternar una clase CSS con `toggle`
+
+Se selecciona el botón `botoToggle` y se escucha el evento `click`:
+
+```js
+const botoToggle = document.querySelector('#botoToggle');
+
+botoToggle.addEventListener('click', () => {
+  botoToggle.classList.toggle('activat');
+});
+```
+
+Cada clic añade la clase `activat` si no está presente o la quita si ya estaba. La clase CSS cambia el color del botón para que el estado activado se vea en pantalla.
+
+---
+
 ## Conclusión
 
 El proyecto combina múltiples ejercicios básicos de JavaScript para crear una pequeña aplicación interactiva con tablero, preguntas, turnos y movimiento. La estructura del código demuestra cómo se pueden ir combinando:

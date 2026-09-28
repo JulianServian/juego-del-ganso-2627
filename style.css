@@ -30,6 +30,11 @@
   color: black;
 }
 
+.activat {
+  background-color: #4caf50;
+  color: white;
+}
+
 .correcte {
   color: green;
 }

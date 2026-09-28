@@ -38,6 +38,7 @@ function executarMultiplicacio() {
   document.querySelector("#resultatOperacions").innerHTML = "Punts amb bonificació: " + puntsFinals;
 }
 
+// Conectamos cada botón con la operación o validación correspondiente.
 document.querySelector("#botoSuma").addEventListener("click", executarSuma);
 document.querySelector("#botoMultiplicacio").addEventListener("click", executarMultiplicacio);
 document.querySelector("#botoCalcular").addEventListener("click", processarNumero);
@@ -250,8 +251,7 @@ function carregarPregunta() {
   });
 }
 
-// Comprobamos si la res
-// puesta elegida es la correcta.
+// Comprobamos si la respuesta elegida coincide con el índice correcto.
 function comprovarResposta(i) {
   const preguntaActual = preguntes[indexPreguntaActual];
 
@@ -388,8 +388,10 @@ botoDauJoc.addEventListener('click', () => {
 // Mostramos el estado inicial de los jugadores al cargar la página.
 mostrarPropietatsJugadors();
 
-// Quitar y poner una clase a un boton con un toggle
+// Seleccionamos el botón que activa o desactiva el estilo de resaltado.
 const botoToggle = document.querySelector('#botoToggle');
+
+// Alternamos la clase CSS cada vez que se pulsa el botón.
 botoToggle.addEventListener('click', () => {
   botoToggle.classList.toggle('activat'); 
 });
