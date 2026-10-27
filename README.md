@@ -16,6 +16,20 @@ El código de [index.js](index.js) reúne diferentes conceptos de programación 
 - actualización del contenido HTML con `innerHTML` y `textContent`
 - lógica de turnos y movimiento en un tablero
 
+## Reglas de las casillas especiales
+
+- La casilla 2 lleva a la 21.
+- Las casillas 5 y 18 hacen perder el siguiente turno.
+- La casilla 7 lleva a la estrella de la 11.
+- La casilla 12 devuelve a la salida.
+- La casilla 14 lleva a la 29.
+- La casilla 22 avanza dos casillas, hasta la 24.
+- La casilla 25 lleva a la 9.
+- La casilla 30 lleva a la 27.
+- La casilla 31 permite tirar de nuevo.
+- La casilla 33 lleva a la 20.
+- La casilla 36 es la meta.
+
 ---
 
 ## 1. Variables iniciales y mensajes iniciales
@@ -476,4 +490,3 @@ Practicar los fundamentos de JavaScript aplicados a un juego interactivo, con es
 - automatización de procesos
 - gestión de turnos y estados
 - diseño de un pequeño juego desde cero
-

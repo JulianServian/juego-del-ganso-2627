@@ -1,63 +1,73 @@
 <!DOCTYPE html>
-<html lang="ca">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Exercici 2: Funcions i Retorn</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#222">
+    <title>Juego de la Oca</title>
+    <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
-  <div id="salida"></div>
+    <main class="app-shell">
+        <header class="page-header">
+            <p class="eyebrow">Un juego para compartir</p>
+            <h1>Juego de la Oca</h1>
+            <p class="subtitle">Tira el dado, avanza por el tablero y pon a prueba tus conocimientos.</p>
+        </header>
 
-  <h2>Operacions del joc</h2>
-  <button id="botoSuma">Sumar Punts (5 + 3)</button>
-  <button id="botoMultiplicacio">Multiplicar Bonificació (4 x 2)</button>
-  <div id="resultatOperacions"></div> <!-- Canviat per a la suma/multiplicació -->
-  
-  <h2>Taula de multiplicar</h2>
-  <label for="numInput">Introdueix un número:</label>
-  <input type="number" id="numInput" placeholder="Ex: 5" required>
-  <button id="botoCalcular">Calcular</button>
+        <form id="formularioJugadores" class="players-form">
+            <fieldset>
+                <legend>Preparad la partida</legend>
+                <label for="nombreJugadorA">Jugador rojo</label>
+                <input id="nombreJugadorA" name="nombreJugadorA" type="text" placeholder="Jugador A">
+                <label for="nombreJugadorB">Jugador azul</label>
+                <input id="nombreJugadorB" name="nombreJugadorB" type="text" placeholder="Jugador B">
+                <button class="button button-secondary" type="submit">Nueva partida</button>
+            </fieldset>
+        </form>
 
-  <p id="missatgeValidacio"></p>
-  <div id="resultatTaula"></div>
+        <div class="game-layout">
+            <section class="board-card">
+                <div id="tablero">
+                    <div id="fichaA" class="ficha roja"></div>
+                    <div id="fichaB" class="ficha azul"></div>
+                </div>
+                <div class="board-legend">
+                    <span><i class="legend-dot roja"></i>Rojo</span>
+                    <span><i class="legend-dot azul"></i>Azul</span>
+                </div>
+            </section>
 
-  <p id="miTexto">Text original</p>
-  <button id="miBoton">Clicame</button>
+            <section class="game-panel">
+                <div class="turn-heading">
+                    <p class="eyebrow">Partida en curso</p>
+                    <h2 id="infoTorn">Turno de Jugador A</h2>
+                </div>
+                <div class="dice-actions">
+                    <button id="botoDauA" class="button button-red" type="button">Tirar dado - Jugador rojo</button>
+                    <button id="botoDauB" class="button button-blue" type="button">Tirar dado - Jugador azul</button>
+                </div>
+                <p id="resultadoDado" class="dice-result" aria-live="polite" aria-atomic="true">Pulsa «Tirar dado» para empezar.</p>
+                <div id="infoJugadores" class="player-status"></div>
+            </section>
+        </div>
+    </main>
 
-  <h2 id="infoTurno">Torn del Jugador A</h2>
-  <p id="resultatDau">Fes clic per llançar el dau.</p> 
-  <button id="botonDado">Llançar dau</button>
+    <dialog id="panelPregunta" class="question-dialog">
+        <div class="question-content">
+            <p class="eyebrow">¡Casilla de pregunta!</p>
+            <h2 id="enunciatPregunta"></h2>
+            <div id="opcionsContenidor" class="answer-options">
+                <button type="button"></button>
+                <button type="button"></button>
+                <button type="button"></button>
+                <button type="button"></button>
+            </div>
+            <p id="resultadoPregunta" class="question-result"></p>
+            <button id="continuarPregunta" class="button button-primary oculto" type="button">Continuar la partida</button>
+        </div>
+    </dialog>
 
-  <h2>Formulari</h2>
-  <form id="formulariJugador">
-    <label for="nom">Nom del jugador:</label>
-    <input type="text" id="nom" required>
-    <button type="submit">Enviar</button>
-  </form>
-
-  <p id="missatge"></p>
-  
-  
-  <button id="botoTirar">Tirar el dau</button>
-  <p id="resultatTirada"></p>
-  <p id="resultatCasella"></p>
-
-  <h2 id="enunciatPregunta"></h2>
-  <div id="opcionsContenidor"></div>
-  <p id="resultatPregunta"></p>
-
-  
-  <div id="contenidorTauler" class="tauler"></div>
-  <button id="botoMoure">Moure 1 casella</button>
-
-
-  <button id="botoDauJoc">Tirar dau i moure</button>
-  <p id="infoTorn"></p>
-  <div id="infoJugadors"></div>
-
-<div id="carlos"></div>
-<button id="botoToggle" type="button">Activar o desactivar resaltado</button>
-
-  <script src="index.js"></script>
+    <script src="index.js"></script>
 </body>
 </html>

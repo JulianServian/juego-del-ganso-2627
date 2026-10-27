@@ -1,397 +1,490 @@
- // Declaramos el nombre del jugador principal y el máximo de tiradas permitidas.
-let nomJugador = "Anna";
-const MAX_TIRADES = 5; 
+const formularioJugadores = document.querySelector("#formularioJugadores");
+const nombreJugadorA = document.querySelector("#nombreJugadorA");
+const nombreJugadorB = document.querySelector("#nombreJugadorB");
+const botonDadoA = document.querySelector("#botoDauA");
+const botonDadoB = document.querySelector("#botoDauB");
+const infoTurno = document.querySelector("#infoTorn");
+const resultadoDado = document.querySelector("#resultadoDado");
+const infoJugadores = document.querySelector("#infoJugadores");
+const tablero = document.querySelector("#tablero");
+const fichaA = document.querySelector("#fichaA");
+const fichaB = document.querySelector("#fichaB");
+const panelPregunta = document.querySelector("#panelPregunta");
+const enunciatPregunta = document.querySelector("#enunciatPregunta");
+const opcionesContenedor = document.querySelector("#opcionsContenidor");
+const resultadoPregunta = document.querySelector("#resultadoPregunta");
+const botonContinuarPregunta = document.querySelector("#continuarPregunta");
 
-// Mostramos los valores en la consola para comprobar que se han cargado correctamente.
-console.log("Jugador: " + nomJugador);
-console.log("Máximo de tiradas: " + MAX_TIRADES);
-
-// Escribimos el nombre del jugador en el elemento HTML con id "salida".
-document.querySelector("#salida").innerHTML = "Jugador: " + nomJugador;
-
-// Función que suma dos números y devuelve el resultado.
-function sumar(a, b) {
-  return a + b;
-}
-
-// Función que multiplica dos números y devuelve el resultado.
-function multiplicar(a, b) {
-  return a * b;
-}
-
-// Función que calcula una suma y muestra el resultado en la página.
-function executarSuma() {
-  let puntsBase = 5;      // Puntuación base.
-  let puntsExtra = 3;     // Puntuación extra.
-  let total = sumar(puntsBase, puntsExtra); // Sumamos ambos valores.
-  
-  // Actualizamos el contenido del elemento con id "resultatOperacions".
-  document.querySelector("#resultatOperacions").innerHTML = "Punts totals: <strong>" + total + "</strong>";
-}
-
-// Función que calcula una multiplicación y muestra el resultado.
-function executarMultiplicacio() {
-  let punts = 4;          // Puntuación inicial.
-  let multiplicador = 2;  // Valor por el que se multiplica.
-  let puntsFinals = multiplicar(punts, multiplicador); // Aplicamos la multiplicación.
-  
-  document.querySelector("#resultatOperacions").innerHTML = "Punts amb bonificació: " + puntsFinals;
-}
-
-// Conectamos cada botón con la operación o validación correspondiente.
-document.querySelector("#botoSuma").addEventListener("click", executarSuma);
-document.querySelector("#botoMultiplicacio").addEventListener("click", executarMultiplicacio);
-document.querySelector("#botoCalcular").addEventListener("click", processarNumero);
-
-// Función para leer un número del formulario y validarlo.
-function processarNumero() {
-  const inputValor = document.querySelector("#numInput").value; // Leemos el texto del input.
-  const divResultat = document.querySelector("#resultatTaula"); // Lugar donde mostramos resultados.
-  const pValidacio = document.querySelector("#missatgeValidacio"); // Mensaje de validación.
-
-  // Si el campo está vacío, avisamos al usuario y salimos de la función.
-  if (inputValor === "") {
-    divResultat.innerHTML = "Introduce un num";
-    pValidacio.innerHTML = "";
-    return;
-  }
-
-  // Convertimos el texto introducido a número.
-  const num = Number(inputValor);
-
-  // Comprobamos si el número está en el rango permitido.
-  const esValid = (num >= 0 && num <= 10) ? "Número en rango" : "Número fueraa de rango";
-  pValidacio.innerHTML = `Estat: <strong>${esValid}</strong>`;
-
-  // Si el número es negativo, avisamos.
-  if (num < 0) {
-    divResultat.innerHTML = "El número ha de ser més gran que 0";
-  } 
-  // Si es mayor de 10, avisamos.
-  else if (num > 10) {
-    divResultat.innerHTML = "El número ha de ser més petitet que 11";
-  } 
-  // Si está dentro del rango, generamos la tabla de multiplicar.
-  else {
-    let taulaHTML = `<h3>Taula del ${num}:</h3><ul>`;
-    for (let i = 1; i <= 10; i++) {
-      taulaHTML += `<li>${num} x ${i} = ${num * i}</li>`;
-    }
-    taulaHTML += "</ul>";
-    
-    divResultat.innerHTML = taulaHTML;
-  }
-}
-
-// Estado inicial del juego.
-let estat = "inici"; 
-
-// Según el valor de "estat", mostramos un mensaje diferente.
-switch (estat) {
-  case "inici":
-    console.log("El joc està a punt de començar!");
-    break;
-  case "turnoA":
-    console.log("És el torn del jugador A.");
-    break;
-  case "turnoB":
-    console.log("És el torn del jugador B.");
-    break;
-  case "final":
-    console.log("El joc ha acabat!");
-    break;
-  default:
-    console.log("Estat no reconegut.");
-}
-
-// Seleccionamos los elementos del DOM que vamos a modificar.
-const text = document.querySelector("#miTexto");
-const boto = document.querySelector("#miBoton");
-
-// Cambiamos el texto visible del elemento.
-text.innerHTML = "Texto modificado";
-
-// Añadimos una clase CSS para destacar el texto.
-text.classList.add("text-destacat");
-
-// Cuando se pulsa el botón, cambiamos el color de fondo y el texto.
-boto.addEventListener("click", () => {
-  text.classList.add("text-destacat-actiu");
-});
-
-// Seleccionamos los elementos relacionados con el turno y el dado.
-const infoTurno = document.querySelector("#infoTurno");
-const resultat = document.querySelector("#resultatDau");
-const botonDado = document.querySelector("#botonDado");
-const tirarDau = () => Math.floor(Math.random() * 6) + 1;
-
-// Variable que guarda el turno actual del juego.
-let tornActual = "A"; 
-
-// Al hacer click en el botón del dado, lanzamos un valor aleatorio.
-botonDado.addEventListener("click", () => {
-  const nomJugador = tornActual;
-  const valorDau = tirarDau();
-
-  // Mostramos qué jugador ha sacado qué valor.
-  const missatge = `Jugador ${nomJugador} ha tret ${valorDau}`;
-  resultat.textContent = missatge.toUpperCase();
-
-  // Cambiamos el turno entre A y B.
-  if (tornActual === "A") {
-    tornActual = "B";
-  } else {
-    tornActual = "A";
-  }
-
-  // Actualizamos el texto del turno actual.
-  infoTurno.innerHTML = `Torn del Jugador ${tornActual}`;
-});
-
-// Seleccionamos el formulario y los campos del nombre del jugador.
-const formulari = document.querySelector('#formulariJugador');
-const inputNom = document.querySelector('#nom');
-const missatge = document.querySelector('#missatge');
-
-// Cuando se envía el formulario, evitamos recargar la página y mostramos el nombre.
-formulari.addEventListener('submit', function(event) {
-  event.preventDefault();
-
-  const nomJugador = inputNom.value; // Guardamos el valor escrito por el usuario.
-  missatge.innerHTML = `Jugador 1: ${nomJugador}`; // Lo mostramos en pantalla.
-});
-
-
-// S3 — Arrays, objectes i moviment del joc
-
-// Creamos un array con los nombres de las casillas del tablero.
-const caselles = ["Start", "Poble", "Pont", "Casa", "Bosc", "Mola", "Final"];
-
-// Seleccionamos los elementos del DOM para mostrar la tirada y la casilla.
-const botoTirar = document.querySelector('#botoTirar');
-const resultatTirada = document.querySelector('#resultatTirada');
-const resultatCasella = document.querySelector('#resultatCasella');
-
-// Cuando se pulsa el botón de tirar, elegimos una casilla aleatoria.
-botoTirar.addEventListener('click', function() {
-
-  // Generamos un número aleatorio entre 0 y la longitud del array.
-  const tirada = Math.floor(Math.random() * caselles.length);
-
-  // Accedemos al array con ese número como índice para obtener una casilla.
-  const nomCasella = caselles[tirada];
-
-  // Mostramos el número de tirada y la casilla elegida.
-  resultatTirada.innerHTML = `Número del dau : ${tirada}`;
-  resultatCasella.innerHTML = `Has caigut a: ${nomCasella}`;
-
-  // Guardamos el resultado en consola para depurar.
-  console.log(`Tirada: ${tirada} - Casella: ${nomCasella}`);
-});
-
-
-// Exercici 9: array de preguntes i objectes
-
-// Array de objetos, cada uno representa una pregunta y sus respuestas.
-const preguntes = [
-  {
-    pregunta: "Quina és la capital de Catalunya?",
-    respostes: ["Girona", "Lleida", "Barcelona", "Tarragona"],
-    correcta: 2 
-  },
-  {
-    pregunta: "Quants dies té un any de traspàs?",
-    respostes: ["365", "366", "364", "360"],
-    correcta: 1
-  },
-  {
-    pregunta: "Quin és el planeta més gran del sistema solar?",
-    respostes: ["Mart", "Lleó", "Júpiter", "Saturn"],
-    correcta: 2 
-  },
-  {
-    pregunta: "Quin llenguatge d'programació s'utilitza per afegir interactivitat a les pàgines web?",
-    respostes: ["HTML", "CSS", "Python", "JavaScript"],
-    correcta: 3 
-  }
+const caselles = [
+    [20.8, 79.7], [22.5, 65.4], [23.7, 53.1], [24.3, 41.6], [25.3, 30], [31.4, 22.6],
+    [38.8, 21.2], [46.1, 21.7], [53.7, 21.9], [61.5, 22.2], [69, 22.6], [78.7, 23.8],
+    [82.7, 34.6], [81.5, 45.9], [83, 59.1], [83.2, 72.5], [73.7, 76.7], [63.3, 75.8],
+    [53.6, 75.3], [44, 75.3], [35.4, 64.8], [36.6, 53.1], [37.4, 42.3], [44.5, 32.8],
+    [53.7, 33.9], [61.9, 34.9], [70.7, 36], [71.7, 47.3], [72.4, 59.4], [63.4, 60.3],
+    [55.5, 60.5], [47.1, 60], [39.5, 60.7], [44.7, 49], [52.5, 49], [61.2, 49]
 ];
 
-// Indicamos qué pregunta estamos mostrando actualmente.
-let indexPreguntaActual = 0;
+class Jugador {
+    constructor(nombre, ficha, desplazamiento) {
+        this.nombre = nombre;
+        this.posicion = 0;
+        this.ficha = ficha;
+        this.desplazamiento = desplazamiento;
+        this.pierdeTurno = false;
+    }
 
-// Seleccionamos los elementos donde se muestran la pregunta y las opciones.
-const enunciat = document.querySelector('#enunciatPregunta');
-const contenidorOpcions = document.querySelector('#opcionsContenidor');
-const resultatPregunta = document.querySelector('#resultatPregunta');
+    mover(caselles) {
+        const x = caselles[this.posicion][0];
+        const y = caselles[this.posicion][1];
 
-// Función que carga la pregunta actual y genera los botones con las respuestas.
-function carregarPregunta() {
-  const preguntaActual = preguntes[indexPreguntaActual]; // Obtenemos la pregunta actual.
-
-  // Mostramos el texto de la pregunta.
-  enunciat.innerHTML = preguntaActual.pregunta;
-
-  // Limpiamos los botones anteriores y el resultado previo.
-  contenidorOpcions.innerHTML = '';
-  resultatPregunta.innerHTML = '';
-
-  let html = '';
-
-  // Generamos un botón por cada opción de respuesta.
-  for (let i = 0; i < preguntaActual.respostes.length; i++) {
-    html += `<button>${preguntaActual.respostes[i]}</button>`;
-  }
-
-  // Insertamos los botones en el contenedor.
-  contenidorOpcions.innerHTML = html;
-  contenidorOpcions.querySelectorAll("button").forEach((botoResposta, index) => {
-    botoResposta.addEventListener("click", () => {
-      comprovarResposta(index);
-    });
-  });
+        this.ficha.style.left = `${x}%`;
+        this.ficha.style.top = `${y}%`;
+        this.ficha.style.transform = `translate(calc(-50% + ${this.desplazamiento}px), -50%)`;
+    }
 }
 
-// Comprobamos si la respuesta elegida coincide con el índice correcto.
-function comprovarResposta(i) {
-  const preguntaActual = preguntes[indexPreguntaActual];
+const jugadores = [
+    new Jugador("Jugador A", fichaA, -5),
+    new Jugador("Jugador B", fichaB, 5)
+];
 
-  if (i === preguntaActual.correcta) {
-    resultatPregunta.innerHTML = "Correcte!";
-    resultatPregunta.classList.remove("incorrecte");
-    resultatPregunta.classList.add("correcte");
-  } else {
-    resultatPregunta.innerHTML = "Incorrecte";
-    resultatPregunta.classList.remove("correcte");
-    resultatPregunta.classList.add("incorrecte");
-  }
-}
+const preguntes = [
+    {
+        pregunta: "¿Cuál es la capital de Cataluña?",
+        respostes: ["Girona", "Lleida", "Barcelona", "Tarragona"],
+        correcta: 2
+    },
+    {
+        pregunta: "¿Cuántos días tiene un año bisiesto?",
+        respostes: ["365", "366", "364", "360"],
+        correcta: 1
+    },
+    {
+        pregunta: "¿Cuál es el planeta más grande del sistema solar?",
+        respostes: ["Marte", "Venus", "Júpiter", "Saturno"],
+        correcta: 2
+    },
+    {
+        pregunta: "¿Qué lenguaje se utiliza para añadir interactividad a las páginas web?",
+        respostes: ["HTML", "CSS", "Python", "JavaScript"],
+        correcta: 3
+    },
+    {
+        pregunta: "¿Cuánto es 8 x 7?",
+        respostes: ["54", "56", "64", "49"],
+        correcta: 1
+    },
+    {
+        pregunta: "¿Cuál es el océano más grande del mundo?",
+        respostes: ["Atlántico", "Índico", "Ártico", "Pacífico"],
+        correcta: 3
+    },
+    {
+        pregunta: "¿Cuántos continentes hay en el modelo de seis continentes?",
+        respostes: ["4", "5", "6", "7"],
+        correcta: 2
+    },
+    {
+        pregunta: "¿Qué animal es conocido como el rey de la selva?",
+        respostes: ["Tigre", "León", "Elefante", "Leopardo"],
+        correcta: 1
+    },
+    {
+        pregunta: "¿Cuál es el resultado de 15 + 27?",
+        respostes: ["32", "40", "42", "45"],
+        correcta: 2
+    },
+    {
+        pregunta: "¿Quién escribió Don Quijote de la Mancha?",
+        respostes: ["Federico García Lorca", "Miguel de Cervantes", "Lope de Vega", "Francisco de Quevedo"],
+        correcta: 1
+    },
+    {
+        pregunta: "¿Cuál es el satélite natural de la Tierra?",
+        respostes: ["Marte", "El Sol", "La Luna", "Venus"],
+        correcta: 2
+    },
+    {
+        pregunta: "¿Qué gas necesitan las personas para respirar?",
+        respostes: ["Dióxido de carbono", "Oxígeno", "Hidrógeno", "Helio"],
+        correcta: 1
+    },
+    {
+        pregunta: "¿Cuántas patas tiene una araña?",
+        respostes: ["6", "8", "10", "12"],
+        correcta: 1
+    },
+    {
+        pregunta: "¿Cuál es el idioma más hablado en Brasil?",
+        respostes: ["Español", "Inglés", "Portugués", "Francés"],
+        correcta: 2
+    },
+    {
+        pregunta: "¿Cuánto es 100 dividido entre 4?",
+        respostes: ["20", "25", "40", "50"],
+        correcta: 1
+    },
+    {
+        pregunta: "¿Qué órgano bombea la sangre por el cuerpo?",
+        respostes: ["Pulmón", "Cerebro", "Hígado", "Corazón"],
+        correcta: 3
+    },
+    {
+        pregunta: "¿En qué país se encuentra la Torre Eiffel?",
+        respostes: ["Italia", "Francia", "Alemania", "España"],
+        correcta: 1
+    },
+    {
+        pregunta: "¿Cuál es el metal cuyo símbolo químico es Au?",
+        respostes: ["Plata", "Cobre", "Oro", "Hierro"],
+        correcta: 2
+    },
+    {
+        pregunta: "¿Cuántos minutos tiene una hora?",
+        respostes: ["30", "45", "60", "100"],
+        correcta: 2
+    },
+    {
+        pregunta: "¿Qué instrumento se utiliza para medir la temperatura?",
+        respostes: ["Barómetro", "Termómetro", "Cronómetro", "Brújula"],
+        correcta: 1
+    },
+    {
+        pregunta: "¿Cuál es el resultado de 9 al cuadrado?",
+        respostes: ["18", "72", "81", "99"],
+        correcta: 2
+    },
+    {
+        pregunta: "¿Qué planeta es conocido como el planeta rojo?",
+        respostes: ["Venus", "Marte", "Mercurio", "Neptuno"],
+        correcta: 1
+    },
+    {
+        pregunta: "¿En qué continente se encuentra Egipto?",
+        respostes: ["Europa", "Asia", "África", "América"],
+        correcta: 2
+    },
+    {
+        pregunta: "¿Qué parte de la planta absorbe el agua del suelo?",
+        respostes: ["Las hojas", "Las flores", "El tallo", "Las raíces"],
+        correcta: 3
+    },
+    {
+        pregunta: "¿Cuál es el resultado de 50 - 18?",
+        respostes: ["28", "32", "38", "42"],
+        correcta: 1
+    },
+    {
+        pregunta: "¿Qué significan las siglas HTML?",
+        respostes: [
+            "HyperText Markup Language",
+            "HighText Machine Language",
+            "Home Tool Markup Language",
+            "Hyper Transfer Main Language"
+        ],
+        correcta: 0
+    },
+    {
+        pregunta: "¿Qué etiqueta HTML se utiliza para crear un enlace?",
+        respostes: ["<p>", "<img>", "<a>", "<h1>"],
+        correcta: 2
+    },
+    {
+        pregunta: "¿Qué propiedad CSS cambia el color del texto?",
+        respostes: ["background-color", "font-size", "color", "text-style"],
+        correcta: 2
+    },
+    {
+        pregunta: "¿Qué símbolo se utiliza para declarar una variable con let en JavaScript?",
+        respostes: ["let", "#", "$", "var"],
+        correcta: 0
+    },
+    {
+        pregunta: "¿Qué método permite seleccionar un elemento mediante un selector CSS?",
+        respostes: ["getElement()", "querySelector()", "selectHTML()", "findElement()"],
+        correcta: 1
+    },
+    {
+        pregunta: "¿Qué propiedad permite cambiar el contenido HTML de un elemento?",
+        respostes: ["innerHTML", "styleCSS", "valueHTML", "querySelector"],
+        correcta: 0
+    },
+    {
+        pregunta: "¿Qué estructura permite repetir instrucciones mientras se cumple una condición?",
+        respostes: ["if", "switch", "while", "return"],
+        correcta: 2
+    },
+    {
+        pregunta: "¿Qué método convierte una cadena de texto en un número entero?",
+        respostes: ["parseInt()", "toString()", "isNaN()", "toUpperCase()"],
+        correcta: 0
+    },
+    {
+        pregunta: "¿Qué operador compara valor y tipo en JavaScript?",
+        respostes: ["=", "==", "===", "!="],
+        correcta: 2
+    },
+    {
+        pregunta: "¿Qué método añade un elemento al final de un array?",
+        respostes: ["pop()", "push()", "shift()", "slice()"],
+        correcta: 1
+    },
+    {
+        pregunta: "¿Qué evento se ejecuta cuando el usuario hace clic en un elemento?",
+        respostes: ["onchange", "onmouseover", "onclick", "onload"],
+        correcta: 2
+    }
+];
 
-// Cargamos la primera pregunta al iniciar la página.
-carregarPregunta();
+const casellesEspecials = [
+    { casilla: 1, tipo: "avanza", destino: 20 },
+    { casilla: 4, tipo: "pierdeTurno" },
+    { casilla: 6, tipo: "avanza", destino: 10 },
+    { casilla: 11, tipo: "inicio" },
+    { casilla: 13, tipo: "avanza", destino: 28 },
+    { casilla: 17, tipo: "pierdeTurno" },
+    { casilla: 21, tipo: "avanza", destino: 23 },
+    { casilla: 24, tipo: "avanza", destino: 8 },
+    { casilla: 29, tipo: "avanza", destino: 26 },
+    { casilla: 30, tipo: "repiteTurno" },
+    { casilla: 32, tipo: "avanza", destino: 19 }
+];
 
-// Exercici 10
+let turno = 0;
+let partidaTerminada = false;
+let respuestaPendiente = false;
+let respuestaRespondida = false;
+let tiradaEnCurso = false;
+let partidaActual = 0;
 
-// Creamos un array con los números del 0 al 20 para representar casillas del tablero.
-const casellesTauler = [];
-for (let i = 0; i <= 20; i++) {
-  casellesTauler[i] = i;
-}
-
-// Variable que guarda la posición actual de la ficha.
-let posicioFitxa = 0;
-
-// Seleccionamos el contenedor del tablero y el botón para mover la ficha.
-const contenidor = document.querySelector('#contenidorTauler');
-const botoMoure = document.querySelector('#botoMoure');
-
-// Función que dibuja el tablero en pantalla.
 function renderitzarTauler() {
-  let html = '';
-  
-  // Recorremos todas las casillas para crear los elementos visuales.
-  for (let i = 0; i < casellesTauler.length; i++) {
-    const esActiva = (i === posicioFitxa) ? 'activa' : ''; // Si es la casilla actual, añadimos clase activa.
-    html += `<div class="casella ${esActiva}">${casellesTauler[i]}</div>`;
-  }
-
-  // Insertamos el tablero generado en el HTML.
-  contenidor.innerHTML = html;
+    for (let i = 0; i < jugadores.length; i++) {
+        jugadores[i].mover(caselles);
+    }
 }
 
-// Cuando pulsamos el botón de mover, avanzamos la ficha o la volvemos a empezar.
-botoMoure.addEventListener("click", () => {
-  if (posicioFitxa < 20) {
-    posicioFitxa++;
-  } else {
-    posicioFitxa = 0; 
-  }
-  renderitzarTauler();
+function mostrarEstado() {
+    let html = "";
+
+    for (let i = 0; i < jugadores.length; i++) {
+        html += `<p>${jugadores[i].nombre}: casilla ${jugadores[i].posicion + 1} de ${caselles.length}</p>`;
+    }
+
+    infoJugadores.innerHTML = html;
+
+    if (partidaTerminada) {
+        infoTurno.innerHTML = `${jugadores[turno].nombre} ha ganado.`;
+    } else {
+        infoTurno.innerHTML = `Turno de ${jugadores[turno].nombre}`;
+    }
+
+    botonDadoA.disabled = partidaTerminada || respuestaPendiente || tiradaEnCurso || turno !== 0;
+    botonDadoB.disabled = partidaTerminada || respuestaPendiente || tiradaEnCurso || turno !== 1;
+}
+
+function iniciarPartida(event) {
+    event.preventDefault();
+
+    partidaActual++;
+    tiradaEnCurso = false;
+    jugadores[0].nombre = nombreJugadorA.value || "Jugador A";
+    jugadores[1].nombre = nombreJugadorB.value || "Jugador B";
+    jugadores[0].posicion = 0;
+    jugadores[1].posicion = 0;
+    jugadores[0].pierdeTurno = false;
+    jugadores[1].pierdeTurno = false;
+    turno = 0;
+    partidaTerminada = false;
+    respuestaPendiente = false;
+    respuestaRespondida = false;
+    if (panelPregunta.open) {
+        panelPregunta.close();
+    }
+    resultadoPregunta.innerHTML = "";
+    resultadoDado.innerHTML = "Pulsa el botón del jugador en turno para tirar.";
+    renderitzarTauler();
+    mostrarEstado();
+}
+
+function mostrarPregunta(jugador) {
+    const pregunta = preguntes[jugador.posicion % preguntes.length];
+    enunciatPregunta.innerHTML =
+        `Casilla ${jugador.posicion + 1}: ${pregunta.pregunta}`;
+    resultadoPregunta.innerHTML = "";
+    botonContinuarPregunta.classList.add("oculto");
+    respuestaPendiente = true;
+    respuestaRespondida = false;
+
+    const botonesRespuesta = opcionesContenedor.querySelectorAll("button");
+    for (let i = 0; i < pregunta.respostes.length; i++) {
+        const botonRespuesta = botonesRespuesta[i];
+        botonRespuesta.textContent = pregunta.respostes[i];
+        botonRespuesta.disabled = false;
+        botonRespuesta.onclick = () => comprobarRespuesta(i, pregunta, jugador);
+    }
+
+    panelPregunta.showModal();
+}
+
+function cambiarTurno() {
+    if (turno === 0) {
+        turno = 1;
+    } else {
+        turno = 0;
+    }
+
+    if (jugadores[turno].pierdeTurno) {
+        jugadores[turno].pierdeTurno = false;
+        resultadoDado.innerHTML += ` ${jugadores[turno].nombre} pierde este turno.`;
+
+        if (turno === 0) {
+            turno = 1;
+        } else {
+            turno = 0;
+        }
+    }
+}
+
+function comprobarCaptura(jugador) {
+    if (jugador.posicion === 0) {
+        return "";
+    }
+
+    const otroJugador = jugadores[turno === 0 ? 1 : 0];
+
+    if (jugador.posicion === otroJugador.posicion) {
+        otroJugador.posicion = 0;
+        return `${otroJugador.nombre} ha sido capturado y vuelve a la salida.`;
+    }
+
+    return "";
+}
+
+function comprobarRespuesta(indice, pregunta, jugador) {
+    if (!respuestaPendiente || respuestaRespondida) {
+        return;
+    }
+
+    respuestaRespondida = true;
+    opcionesContenedor.querySelectorAll("button").forEach((botonRespuesta) => {
+        botonRespuesta.disabled = true;
+    });
+
+    if (indice === pregunta.correcta) {
+        resultadoPregunta.innerHTML = "¡Correcto!";
+    } else {
+        resultadoPregunta.innerHTML =
+            `Incorrecto. La respuesta correcta era: ${pregunta.respostes[pregunta.correcta]}.`;
+        jugador.posicion--;
+
+        if (jugador.posicion < 0) {
+            jugador.posicion = 0;
+        }
+
+        const mensajeCaptura = comprobarCaptura(jugador);
+        if (mensajeCaptura !== "") {
+            resultadoDado.innerHTML = mensajeCaptura;
+        }
+    }
+    botonContinuarPregunta.classList.remove("oculto");
+}
+
+function continuarPartida(jugador) {
+    if (!respuestaPendiente || !respuestaRespondida) {
+        return;
+    }
+
+    respuestaPendiente = false;
+    respuestaRespondida = false;
+    panelPregunta.close();
+
+    if (jugador.posicion === caselles.length - 1) {
+        partidaTerminada = true;
+        renderitzarTauler();
+        mostrarEstado();
+        return;
+    }
+
+    cambiarTurno();
+    renderitzarTauler();
+    mostrarEstado();
+}
+
+async function tirarDado(indiceJugador) {
+    if (partidaTerminada || respuestaPendiente || tiradaEnCurso || turno !== indiceJugador) {
+        return;
+    }
+
+    const jugador = jugadores[indiceJugador];
+    const dado = Math.floor(Math.random() * 6) + 1;
+    const partidaDeLaTirada = partidaActual;
+    tiradaEnCurso = true;
+    resultadoDado.textContent = `${jugador.nombre}: ha salido el ${dado}.`;
+    mostrarEstado();
+
+    await new Promise((resolve) => setTimeout(resolve, 900));
+    if (partidaDeLaTirada !== partidaActual) {
+        return;
+    }
+
+    tiradaEnCurso = false;
+    jugador.posicion += dado;
+
+    if (jugador.posicion > caselles.length - 1) {
+        jugador.posicion = caselles.length - 1;
+    }
+
+    let mensaje = `${jugador.nombre} ha sacado un ${dado} y avanza a la casilla ${jugador.posicion + 1}.`;
+    let casillaEspecial = null;
+
+    for (let i = 0; i < casellesEspecials.length; i++) {
+        if (casellesEspecials[i].casilla === jugador.posicion) {
+            casillaEspecial = casellesEspecials[i];
+        }
+    }
+
+    if (casillaEspecial !== null) {
+        if (casillaEspecial.tipo === "avanza") {
+            jugador.posicion = casillaEspecial.destino;
+            mensaje += ` Avanza a la casilla ${jugador.posicion + 1}.`;
+        } else if (casillaEspecial.tipo === "inicio") {
+            jugador.posicion = 0;
+            mensaje += " Vuelve a la salida.";
+        } else if (casillaEspecial.tipo === "pierdeTurno") {
+            jugador.pierdeTurno = true;
+            mensaje += " Pierde su próximo turno.";
+        } else if (casillaEspecial.tipo === "repiteTurno") {
+            mensaje += " Vuelve a tirar.";
+        }
+    }
+
+    const mensajeCaptura = comprobarCaptura(jugador);
+    if (mensajeCaptura !== "") {
+        mensaje += ` ${mensajeCaptura}`;
+    }
+
+    resultadoDado.innerHTML = mensaje;
+    renderitzarTauler();
+
+    if (jugador.posicion === caselles.length - 1) {
+        partidaTerminada = true;
+    } else if (casillaEspecial === null) {
+        mostrarPregunta(jugador);
+    } else if (casillaEspecial.tipo !== "repiteTurno") {
+        cambiarTurno();
+    }
+    mostrarEstado();
+}
+
+formularioJugadores.addEventListener("submit", iniciarPartida);
+botonDadoA.addEventListener("click", () => tirarDado(0));
+botonDadoB.addEventListener("click", () => tirarDado(1));
+botonContinuarPregunta.addEventListener("click", () => {
+    continuarPartida(jugadores[turno]);
+});
+panelPregunta.addEventListener("cancel", (event) => {
+    event.preventDefault();
 });
 
-// Dibujamos el tablero inicialmente.
 renderitzarTauler();
-
-// Exercici 11
-
-// Objeto que representa al Jugador A.
-const jugadorA = {
-  nom: "Jugador A",
-  posicio: 0,
-  activat: true,
-};
-
-// Objeto que representa al Jugador B.
-const jugadorB = {
-  nom: "Jugador B",
-  posicio: 0,
-  activat: false,
-};
-
-// Seleccionamos los elementos del DOM necesarios para la información de los jugadores.
-const botoDauJoc = document.querySelector('#botoDauJoc');
-const infoJugadors = document.querySelector('#infoJugadors');
-const infoTorn = document.querySelector('#infoTorn');
-
-// Función que muestra el estado de cada jugador en la página.
-function mostrarPropietatsJugadors() {
-  let html = "<h3>Estat dels jugadors:</h3>";
-
-  // Añadimos la información del jugador A.
-  html += "<p><strong>" + jugadorA.nom + ":</strong><br>";
-  for (let propietat in jugadorA) {
-    html += `- ${propietat}: ${jugadorA[propietat]}<br>`;
-  }
-  html += "</p>";
-
-  // Añadimos la información del jugador B.
-  html += "<p><strong>" + jugadorB.nom + ":</strong><br>";
-  for (let propietat in jugadorB) {
-    html += `- ${propietat}: ${jugadorB[propietat]}<br>`;
-  }
-  html += "</p>";
-
-  // Mostramos todo el contenido en el elemento de la página.
-  infoJugadors.innerHTML = html;
-}
-
-// Cuando se pulsa el botón de lanzar dado, se mueve el jugador activo y cambia el turno.
-botoDauJoc.addEventListener('click', () => {
-  const dau = Math.floor(Math.random() * 6) + 1; // Genera un dado del 1 al 6.
-  
-  // Determinamos quién es el jugador activo en este momento.
-  const jugadorActual = jugadorA.activat ? jugadorA : jugadorB;
-
-  // Sumamos el valor del dado a la posición del jugador activo.
-  jugadorActual.posicio += dau;
-  if (jugadorActual.posicio > 20) {
-    jugadorActual.posicio = 20; // Limitamos la posición máxima a 20.
-  }
-
-  // Cambiamos el turno intercambiando el estado activo de los jugadores.
-  jugadorA.activat = !jugadorA.activat;
-  jugadorB.activat = !jugadorB.activat;
-
-  // Identificamos quién será el siguiente en jugar.
-  const seguentJugador = jugadorA.activat ? jugadorA.nom : jugadorB.nom;
-
-  // Actualizamos el texto con la tirada y el próximo turno.
-  infoTorn.innerHTML = `${jugadorActual.nom} ha tret un ${dau}. Propera posició: ${jugadorActual.posicio}. Proper torn: ${seguentJugador}`;
-
-  // Mostramos los datos actualizados de los jugadores.
-  mostrarPropietatsJugadors();
-  
-  // Actualizamos la posición de la ficha en el tablero.
-  posicioFitxa = jugadorActual.posicio;
-  renderitzarTauler();
-});
-
-// Mostramos el estado inicial de los jugadores al cargar la página.
-mostrarPropietatsJugadors();
-
-// Seleccionamos el botón que activa o desactiva el estilo de resaltado.
-const botoToggle = document.querySelector('#botoToggle');
-
-// Alternamos la clase CSS cada vez que se pulsa el botón.
-botoToggle.addEventListener('click', () => {
-  botoToggle.classList.toggle('activat'); 
-});
+mostrarEstado();
