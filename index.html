@@ -38,18 +38,25 @@
                 </div>
             </section>
 
-            <section class="game-panel">
-                <div class="turn-heading">
-                    <p class="eyebrow">Partida en curso</p>
-                    <h2 id="infoTorn">Turno de Jugador A</h2>
-                </div>
-                <div class="dice-actions">
-                    <button id="botoDauA" class="button button-red" type="button">Tirar dado - Jugador rojo</button>
-                    <button id="botoDauB" class="button button-blue" type="button">Tirar dado - Jugador azul</button>
-                </div>
-                <p id="resultadoDado" class="dice-result" aria-live="polite" aria-atomic="true">Pulsa «Tirar dado» para empezar.</p>
-                <div id="infoJugadores" class="player-status"></div>
-            </section>
+            <aside class="game-sidebar">
+                <section class="game-panel">
+                    <div class="turn-heading">
+                        <p class="eyebrow">Partida en curso</p>
+                        <h2 id="infoTorn">Turno de Jugador A</h2>
+                    </div>
+                    <div class="dice-actions">
+                        <button id="botoDauA" class="button button-red" type="button">Tirar dado - Jugador rojo</button>
+                        <button id="botoDauB" class="button button-blue" type="button">Tirar dado - Jugador azul</button>
+                    </div>
+                    <p id="resultadoDado" class="dice-result" aria-live="polite" aria-atomic="true">Pulsa «Tirar dado» para empezar.</p>
+                    <div id="infoJugadores" class="player-status"></div>
+                </section>
+
+                <section class="state-panel" aria-labelledby="stateHeading">
+                    <h2 id="stateHeading">Estado de la partida (JSON)</h2>
+                    <pre id="estadoPartida" aria-live="polite" aria-atomic="true"></pre>
+                </section>
+            </aside>
         </div>
     </main>
 

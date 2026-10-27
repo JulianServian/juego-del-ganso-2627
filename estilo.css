@@ -112,10 +112,41 @@ h1 {
     gap: 16px;
 }
 
+.game-sidebar {
+    display: grid;
+    align-content: start;
+    gap: 16px;
+    min-width: 0;
+}
+
 .board-card,
 .game-panel {
     min-width: 0;
     padding: 20px;
+}
+
+.state-panel {
+    min-width: 0;
+    padding: 20px;
+    border: 1px solid #555;
+    background: #333;
+}
+
+.state-panel h2 {
+    margin-bottom: 12px;
+    font-size: 1.15rem;
+}
+
+.state-panel pre {
+    max-height: 360px;
+    margin: 0;
+    overflow: auto;
+    padding: 12px;
+    background: #222;
+    color: #eee;
+    font: 0.85rem/1.5 Consolas, monospace;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
 }
 
 .board-card {
@@ -339,6 +370,10 @@ h1 {
     }
 
     .game-panel {
+        padding: 18px;
+    }
+
+    .state-panel {
         padding: 18px;
     }
 

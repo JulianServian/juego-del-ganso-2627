@@ -7,6 +7,7 @@ const botonDadoB = document.querySelector("#botoDauB");
 const infoTurno = document.querySelector("#infoTorn");
 const resultadoDado = document.querySelector("#resultadoDado");
 const infoJugadores = document.querySelector("#infoJugadores");
+const estadoPartida = document.querySelector("#estadoPartida");
 const tablero = document.querySelector("#tablero");
 const fichaA = document.querySelector("#fichaA");
 const fichaB = document.querySelector("#fichaB");
@@ -27,33 +28,31 @@ const caselles = [
     [55.5, 60.5], [47.1, 60], [39.5, 60.7], [44.7, 49], [52.5, 49], [61.2, 49]
 ];
 
-// Coloco la ficha en el tablero según la posición actual del jugador.
-function moverJugador(jugador) {
-    const x = caselles[jugador.posicion][0];
-    const y = caselles[jugador.posicion][1];
+// Modelo un jugador y su ficha dentro de la partida.
+class Jugador {
+    constructor(nombre, ficha, desplazamiento) {
+        this.nombre = nombre;
+        this.posicion = 0;
+        this.ficha = ficha;
+        this.desplazamiento = desplazamiento;
+        this.pierdeTurno = false;
+    }
 
-    jugador.ficha.style.left = `${x}%`;
-    jugador.ficha.style.top = `${y}%`;
-    jugador.ficha.style.transform =
-        `translate(calc(-50% + ${jugador.desplazamiento}px), -50%)`;
+    mover(caselles) {
+        const x = caselles[this.posicion][0];
+        const y = caselles[this.posicion][1];
+
+        this.ficha.style.left = `${x}%`;
+        this.ficha.style.top = `${y}%`;
+        this.ficha.style.transform =
+            `translate(calc(-50% + ${this.desplazamiento}px), -50%)`;
+    }
 }
 
-// Creo los dos jugadores como objetos y separo un poco sus fichas para distinguirlas.
+// Creo los jugadores y separo un poco sus fichas para distinguirlas.
 const jugadores = [
-    {
-        nombre: "Jugador A",
-        posicion: 0,
-        ficha: fichaA,
-        desplazamiento: -5,
-        pierdeTurno: false
-    },
-    {
-        nombre: "Jugador B",
-        posicion: 0,
-        ficha: fichaB,
-        desplazamiento: 5,
-        pierdeTurno: false
-    }
+    new Jugador("Jugador A", fichaA, -5),
+    new Jugador("Jugador B", fichaB, 5)
 ];
 
 // Guardo las preguntas y marco con un índice que empieza en 0 cuál es la respuesta correcta.
@@ -272,19 +271,36 @@ let partidaActual = 0; // Me sirve para reconocer si empezó otra partida durant
 // Coloco todas las fichas en la casilla que le corresponde a cada jugador.
 function renderitzarTauler() {
     for (let i = 0; i < jugadores.length; i++) {
-        moverJugador(jugadores[i]);
+        jugadores[i].mover(caselles);
     }
 }
 
 // Actualizo el marcador, el turno que se muestra y los botones de los dados.
 function mostrarEstado() {
     let html = ""; // Voy juntando aquí la información de los dos jugadores.
+    const jugadoresEstado = [];
 
     for (let i = 0; i < jugadores.length; i++) {
         html += `<p>${jugadores[i].nombre}: casilla ${jugadores[i].posicion + 1} de ${caselles.length}</p>`;
+        jugadoresEstado.push({
+            nombre: jugadores[i].nombre,
+            casilla: jugadores[i].posicion + 1,
+            pierdeTurno: jugadores[i].pierdeTurno,
+            tieneElTurno: !partidaTerminada && turno === i
+        });
     }
 
     infoJugadores.innerHTML = html;
+    estadoPartida.textContent = JSON.stringify({
+        partidaTerminada: partidaTerminada,
+        turnoActual: partidaTerminada ? null : jugadores[turno].nombre,
+        ganador: partidaTerminada ? jugadores[turno].nombre : null,
+        respuestaPendiente: respuestaPendiente,
+        respuestaRespondida: respuestaRespondida,
+        tiradaEnCurso: tiradaEnCurso,
+        totalCasillas: caselles.length,
+        jugadores: jugadoresEstado
+    }, null, 2);
 
     // Muestro quién ha ganado o a quién le toca jugar.
     if (partidaTerminada) {
@@ -421,6 +437,7 @@ function comprobarRespuesta(indice, pregunta, jugador) {
         }
     }
     botonContinuarPregunta.classList.remove("oculto");
+    mostrarEstado();
 }
 
 // Cierro la pregunta y sigo con la partida cuando ya se ha respondido.
