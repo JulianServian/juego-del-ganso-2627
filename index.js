@@ -1,3 +1,4 @@
+// Guardo aquí los elementos de la página que necesito para controlar el juego.
 const formularioJugadores = document.querySelector("#formularioJugadores");
 const nombreJugadorA = document.querySelector("#nombreJugadorA");
 const nombreJugadorB = document.querySelector("#nombreJugadorB");
@@ -15,6 +16,8 @@ const opcionesContenedor = document.querySelector("#opcionsContenidor");
 const resultadoPregunta = document.querySelector("#resultadoPregunta");
 const botonContinuarPregunta = document.querySelector("#continuarPregunta");
 
+// Guardo las coordenadas de las casillas para colocar las fichas sobre el tablero.
+// En cada posición pongo primero la coordenada horizontal y después la vertical.
 const caselles = [
     [20.8, 79.7], [22.5, 65.4], [23.7, 53.1], [24.3, 41.6], [25.3, 30], [31.4, 22.6],
     [38.8, 21.2], [46.1, 21.7], [53.7, 21.9], [61.5, 22.2], [69, 22.6], [78.7, 23.8],
@@ -24,30 +27,36 @@ const caselles = [
     [55.5, 60.5], [47.1, 60], [39.5, 60.7], [44.7, 49], [52.5, 49], [61.2, 49]
 ];
 
-class Jugador {
-    constructor(nombre, ficha, desplazamiento) {
-        this.nombre = nombre;
-        this.posicion = 0;
-        this.ficha = ficha;
-        this.desplazamiento = desplazamiento;
-        this.pierdeTurno = false;
-    }
+// Coloco la ficha en el tablero según la posición actual del jugador.
+function moverJugador(jugador) {
+    const x = caselles[jugador.posicion][0];
+    const y = caselles[jugador.posicion][1];
 
-    mover(caselles) {
-        const x = caselles[this.posicion][0];
-        const y = caselles[this.posicion][1];
-
-        this.ficha.style.left = `${x}%`;
-        this.ficha.style.top = `${y}%`;
-        this.ficha.style.transform = `translate(calc(-50% + ${this.desplazamiento}px), -50%)`;
-    }
+    jugador.ficha.style.left = `${x}%`;
+    jugador.ficha.style.top = `${y}%`;
+    jugador.ficha.style.transform =
+        `translate(calc(-50% + ${jugador.desplazamiento}px), -50%)`;
 }
 
+// Creo los dos jugadores como objetos y separo un poco sus fichas para distinguirlas.
 const jugadores = [
-    new Jugador("Jugador A", fichaA, -5),
-    new Jugador("Jugador B", fichaB, 5)
+    {
+        nombre: "Jugador A",
+        posicion: 0,
+        ficha: fichaA,
+        desplazamiento: -5,
+        pierdeTurno: false
+    },
+    {
+        nombre: "Jugador B",
+        posicion: 0,
+        ficha: fichaB,
+        desplazamiento: 5,
+        pierdeTurno: false
+    }
 ];
 
+// Guardo las preguntas y marco con un índice que empieza en 0 cuál es la respuesta correcta.
 const preguntes = [
     {
         pregunta: "¿Cuál es la capital de Cataluña?",
@@ -236,6 +245,8 @@ const preguntes = [
     }
 ];
 
+// Aquí anoto las casillas especiales usando posiciones que empiezan en 0.
+// En los mensajes muestro los números de casilla empezando en 1, como los ve el jugador.
 const casellesEspecials = [
     { casilla: 1, tipo: "avanza", destino: 20 },
     { casilla: 4, tipo: "pierdeTurno" },
@@ -250,21 +261,24 @@ const casellesEspecials = [
     { casilla: 32, tipo: "avanza", destino: 19 }
 ];
 
-let turno = 0;
-let partidaTerminada = false;
-let respuestaPendiente = false;
-let respuestaRespondida = false;
-let tiradaEnCurso = false;
-let partidaActual = 0;
+// Guardo el estado de la partida para saber qué acciones puedo permitir.
+let turno = 0; // Uso 0 para el jugador A y 1 para el jugador B.
+let partidaTerminada = false; // Con esto bloqueo las tiradas cuando alguien gana.
+let respuestaPendiente = false; // Lo pongo a true cuando hay una pregunta por responder.
+let respuestaRespondida = false; // Lo uso para que no se responda dos veces la misma pregunta.
+let tiradaEnCurso = false; // Lo uso para bloquear otra tirada mientras espero el resultado.
+let partidaActual = 0; // Me sirve para reconocer si empezó otra partida durante una tirada.
 
+// Coloco todas las fichas en la casilla que le corresponde a cada jugador.
 function renderitzarTauler() {
     for (let i = 0; i < jugadores.length; i++) {
-        jugadores[i].mover(caselles);
+        moverJugador(jugadores[i]);
     }
 }
 
+// Actualizo el marcador, el turno que se muestra y los botones de los dados.
 function mostrarEstado() {
-    let html = "";
+    let html = ""; // Voy juntando aquí la información de los dos jugadores.
 
     for (let i = 0; i < jugadores.length; i++) {
         html += `<p>${jugadores[i].nombre}: casilla ${jugadores[i].posicion + 1} de ${caselles.length}</p>`;
@@ -272,21 +286,26 @@ function mostrarEstado() {
 
     infoJugadores.innerHTML = html;
 
+    // Muestro quién ha ganado o a quién le toca jugar.
     if (partidaTerminada) {
         infoTurno.innerHTML = `${jugadores[turno].nombre} ha ganado.`;
     } else {
         infoTurno.innerHTML = `Turno de ${jugadores[turno].nombre}`;
     }
 
+    // Habilito solo el dado del jugador que tiene el turno y puede tirar.
     botonDadoA.disabled = partidaTerminada || respuestaPendiente || tiradaEnCurso || turno !== 0;
     botonDadoB.disabled = partidaTerminada || respuestaPendiente || tiradaEnCurso || turno !== 1;
 }
 
+// Empiezo una partida nueva y vuelvo a poner a los jugadores en la salida.
 function iniciarPartida(event) {
     event.preventDefault();
 
+    // Cambio el número de partida para ignorar tiradas que sigan pendientes de la anterior.
     partidaActual++;
     tiradaEnCurso = false;
+    // Si no escriben un nombre, pongo uno predeterminado.
     jugadores[0].nombre = nombreJugadorA.value || "Jugador A";
     jugadores[1].nombre = nombreJugadorB.value || "Jugador B";
     jugadores[0].posicion = 0;
@@ -297,6 +316,7 @@ function iniciarPartida(event) {
     partidaTerminada = false;
     respuestaPendiente = false;
     respuestaRespondida = false;
+    // Cierro la pregunta anterior si quedó abierta al empezar esta partida.
     if (panelPregunta.open) {
         panelPregunta.close();
     }
@@ -306,7 +326,9 @@ function iniciarPartida(event) {
     mostrarEstado();
 }
 
+// Preparo y enseño la pregunta que corresponde a la casilla del jugador.
 function mostrarPregunta(jugador) {
+    // Uso el módulo para volver al principio de las preguntas cuando se acaban.
     const pregunta = preguntes[jugador.posicion % preguntes.length];
     enunciatPregunta.innerHTML =
         `Casilla ${jugador.posicion + 1}: ${pregunta.pregunta}`;
@@ -315,6 +337,7 @@ function mostrarPregunta(jugador) {
     respuestaPendiente = true;
     respuestaRespondida = false;
 
+    // Pongo las respuestas en los botones y hago que cada uno compruebe su opción.
     const botonesRespuesta = opcionesContenedor.querySelectorAll("button");
     for (let i = 0; i < pregunta.respostes.length; i++) {
         const botonRespuesta = botonesRespuesta[i];
@@ -326,6 +349,7 @@ function mostrarPregunta(jugador) {
     panelPregunta.showModal();
 }
 
+// Paso el turno al otro jugador y reviso si tiene que perderlo.
 function cambiarTurno() {
     if (turno === 0) {
         turno = 1;
@@ -333,6 +357,7 @@ function cambiarTurno() {
         turno = 0;
     }
 
+    // Si le toca perder turno, quito la penalización y paso al siguiente jugador.
     if (jugadores[turno].pierdeTurno) {
         jugadores[turno].pierdeTurno = false;
         resultadoDado.innerHTML += ` ${jugadores[turno].nombre} pierde este turno.`;
@@ -345,14 +370,18 @@ function cambiarTurno() {
     }
 }
 
+// Compruebo si el jugador ha caído en la misma casilla que su oponente.
 function comprobarCaptura(jugador) {
+    // No hago capturas cuando el jugador está en la salida.
     if (jugador.posicion === 0) {
         return "";
     }
 
+    // Busco al otro jugador según quién tenga el turno.
     const otroJugador = jugadores[turno === 0 ? 1 : 0];
 
     if (jugador.posicion === otroJugador.posicion) {
+        // Si hay captura, mando al otro jugador a la salida.
         otroJugador.posicion = 0;
         return `${otroJugador.nombre} ha sido capturado y vuelve a la salida.`;
     }
@@ -360,12 +389,15 @@ function comprobarCaptura(jugador) {
     return "";
 }
 
+// Compruebo la respuesta, bloqueo los botones y hago retroceder si se equivoca.
 function comprobarRespuesta(indice, pregunta, jugador) {
+    // No hago nada si ya contestó o si no hay una pregunta pendiente.
     if (!respuestaPendiente || respuestaRespondida) {
         return;
     }
 
     respuestaRespondida = true;
+    // Desactivo los botones para que no se pueda cambiar la respuesta.
     opcionesContenedor.querySelectorAll("button").forEach((botonRespuesta) => {
         botonRespuesta.disabled = true;
     });
@@ -375,12 +407,14 @@ function comprobarRespuesta(indice, pregunta, jugador) {
     } else {
         resultadoPregunta.innerHTML =
             `Incorrecto. La respuesta correcta era: ${pregunta.respostes[pregunta.correcta]}.`;
+        // Si falla, lo hago retroceder una casilla, pero no más allá de la salida.
         jugador.posicion--;
 
         if (jugador.posicion < 0) {
             jugador.posicion = 0;
         }
 
+        // Después del retroceso, reviso también si se produce una captura.
         const mensajeCaptura = comprobarCaptura(jugador);
         if (mensajeCaptura !== "") {
             resultadoDado.innerHTML = mensajeCaptura;
@@ -389,7 +423,9 @@ function comprobarRespuesta(indice, pregunta, jugador) {
     botonContinuarPregunta.classList.remove("oculto");
 }
 
+// Cierro la pregunta y sigo con la partida cuando ya se ha respondido.
 function continuarPartida(jugador) {
+    // Espero a que haya una pregunta y a que el jugador la haya contestado.
     if (!respuestaPendiente || !respuestaRespondida) {
         return;
     }
@@ -398,6 +434,7 @@ function continuarPartida(jugador) {
     respuestaRespondida = false;
     panelPregunta.close();
 
+    // Compruebo si después de responder el jugador ha llegado a la última casilla.
     if (jugador.posicion === caselles.length - 1) {
         partidaTerminada = true;
         renderitzarTauler();
@@ -410,19 +447,24 @@ function continuarPartida(jugador) {
     mostrarEstado();
 }
 
+// Tiro el dado, muevo al jugador y aplico lo que pase en la casilla.
 async function tirarDado(indiceJugador) {
+    // No dejo tirar fuera de turno ni mientras haya otra acción pendiente o la partida acabó.
     if (partidaTerminada || respuestaPendiente || tiradaEnCurso || turno !== indiceJugador) {
         return;
     }
 
     const jugador = jugadores[indiceJugador];
-    const dado = Math.floor(Math.random() * 6) + 1;
+    const dado = Math.floor(Math.random() * 6) + 1; // Saco un número aleatorio del 1 al 6.
+    // Guardo el número de partida para saber si se ha reiniciado durante la espera.
     const partidaDeLaTirada = partidaActual;
     tiradaEnCurso = true;
     resultadoDado.textContent = `${jugador.nombre}: ha salido el ${dado}.`;
     mostrarEstado();
 
+    // Espero un poco para que se vea el resultado antes de mover la ficha.
     await new Promise((resolve) => setTimeout(resolve, 900));
+    // Si han empezado otra partida, no aplico la tirada que quedó pendiente.
     if (partidaDeLaTirada !== partidaActual) {
         return;
     }
@@ -430,6 +472,7 @@ async function tirarDado(indiceJugador) {
     tiradaEnCurso = false;
     jugador.posicion += dado;
 
+    // Evito que el jugador avance más allá de la última casilla.
     if (jugador.posicion > caselles.length - 1) {
         jugador.posicion = caselles.length - 1;
     }
@@ -437,12 +480,15 @@ async function tirarDado(indiceJugador) {
     let mensaje = `${jugador.nombre} ha sacado un ${dado} y avanza a la casilla ${jugador.posicion + 1}.`;
     let casillaEspecial = null;
 
+    // Busco si la casilla en la que cayó tiene alguna regla especial.
     for (let i = 0; i < casellesEspecials.length; i++) {
         if (casellesEspecials[i].casilla === jugador.posicion) {
             casillaEspecial = casellesEspecials[i];
         }
     }
 
+    // Aplico el efecto que corresponda: avanzar, volver a la salida, perder turno
+    // o tirar otra vez.
     if (casillaEspecial !== null) {
         if (casillaEspecial.tipo === "avanza") {
             jugador.posicion = casillaEspecial.destino;
@@ -458,6 +504,7 @@ async function tirarDado(indiceJugador) {
         }
     }
 
+    // Reviso si el efecto de la casilla especial terminó en la posición del rival.
     const mensajeCaptura = comprobarCaptura(jugador);
     if (mensajeCaptura !== "") {
         mensaje += ` ${mensajeCaptura}`;
@@ -466,6 +513,7 @@ async function tirarDado(indiceJugador) {
     resultadoDado.innerHTML = mensaje;
     renderitzarTauler();
 
+    // Decido si alguien gana, si hago una pregunta o si paso el turno.
     if (jugador.posicion === caselles.length - 1) {
         partidaTerminada = true;
     } else if (casillaEspecial === null) {
@@ -476,6 +524,7 @@ async function tirarDado(indiceJugador) {
     mostrarEstado();
 }
 
+// Hago que el formulario y los botones ejecuten las funciones del juego.
 formularioJugadores.addEventListener("submit", iniciarPartida);
 botonDadoA.addEventListener("click", () => tirarDado(0));
 botonDadoB.addEventListener("click", () => tirarDado(1));
@@ -483,8 +532,10 @@ botonContinuarPregunta.addEventListener("click", () => {
     continuarPartida(jugadores[turno]);
 });
 panelPregunta.addEventListener("cancel", (event) => {
+    // No dejo cerrar la pregunta hasta que el jugador haya respondido.
     event.preventDefault();
 });
 
+// Al abrir la página, coloco las fichas en la salida y muestro el estado inicial.
 renderitzarTauler();
 mostrarEstado();
